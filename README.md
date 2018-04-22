@@ -40,7 +40,7 @@ This will be addressed if practical uses are found for the OLEDiESP build, but o
 
 Credits
 -------
-- [Hayry](https://www.tindie.com/stores/PhoenixCNC/) for providing the [OLEDiESP](https://www.tindie.com/products/PhoenixCNC/olediesp-a-tiny-cube-with-esp07--esp12--oled-iot/) to play with.
+- [Hayri](https://www.tindie.com/stores/PhoenixCNC/) for providing the [OLEDiESP](https://www.tindie.com/products/PhoenixCNC/olediesp-a-tiny-cube-with-esp07--esp12--oled-iot/) to play with.
 - [Reaper7](https://github.com/reaper7/) for providing inspiration with hir [SPIFFS Update Firmware](https://github.com/reaper7/ESP8266SPIFFSUpdateFirmware) project.
 
 
