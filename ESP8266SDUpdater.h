@@ -3,7 +3,7 @@
 /*
  *
  * ESP8266 SD Updater
- * Project Page: https://github.com/tobozo/ESP8266-SD-Updater
+ * Project Page: https://github.com/tobozo/ESP8266SDUpdater
  * 
  * Copyright 2018 tobozo http://github.com/tobozo
  *
@@ -36,12 +36,12 @@
  * 
  *  Just add this in your sketch:
  * 
- *  #include "ESP8266Updater.h"
+ *  #include "ESP8266SDUpdater.h"
  *  
  * 
  *   if(digitalRead(BUTTON_A_PIN) == 0) {
  *     Serial.println("Will Load menu binary");
- *     updateFromFS(SD);
+ *     updateFromSD();
  *     ESP.restart();
  *   }
  * 
@@ -53,11 +53,14 @@
  */
 
 #include <SPI.h>
-//#define FS_NO_GLOBALS // depending on the SDK version this may require a small patch
-//#include <FS.h> // see https://github.com/esp8266/Arduino/search?utf8=%E2%9C%93&q=FS_NO_GLOBALS
-#include <SD.h> // if you get namespace conflicts, patch your FS.h!
+// Depending on the SDK version this may require a small patch in "FS.h", see
+//     https://github.com/esp8266/Arduino/search?utf8=%E2%9C%93&q=FS_NO_GLOBALS
+// If you also get namespace conflicts you may need to patch you app too:
+//     https://github.com/esp8266/Arduino/issues/2281#issuecomment-258706478
+#define FS_NO_GLOBALS
+#include <SD.h>
 
-String MENU_BIN = "MENU.BIN";
+String MENU_BIN = "/MENU.BIN";
 
 void displayUpdateUI(String label) {
   /*
