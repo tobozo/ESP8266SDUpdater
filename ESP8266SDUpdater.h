@@ -118,7 +118,6 @@ void updateFromSD(String fileName = MENU_BIN ) {
 
   size_t updateSize = updateBin.size();
   if (updateSize > 0) {
-    // TODO: check max flashable size (no limit found so far)
     Serial.println("Try to start update");
     performUpdate(updateBin, updateSize, fileName);
   } else {
