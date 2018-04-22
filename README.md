@@ -3,6 +3,11 @@ This is the ESP8266 Prequel to the [M5Stack-SD-Updater](https://github.com/toboz
 
 ESP8266Updater is an Arduino library to package you apps on a SD card and load them from different contexts such as a menu app or MQTT message.
 
+
+<img src="https://github.com/tobozo/ESP8266SDUpdater/raw/master/examples/OLEDiFOO/OLEDiESP.jpg">
+
+
+
 Minimal Requirements
 --------------------
 - ESP8266 (4M and more)
