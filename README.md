@@ -34,7 +34,6 @@ Also works with filenames:
     ESP.restart(); // don't forget to restart!
 
 The [OLEDiFOO example](https://github.com/tobozo/ESP8266SDUpdater/tree/master/examples/OLEDiFOO) should have its binary renamed to MENU.BIN and copied onto the SD Card.
-**The current OLEDiFOO sketch is only a rudimentary example and will crash if more than 5 files are added on the SD Card**.
 
 This will be addressed if practical uses are found for the OLEDiESP build, but other menus should be added for other platforms such as [OLEDiCADE](https://www.tindie.com/products/PhoenixCNC/oledicade-tiny-pac-man-game-console/), [Espresso Lite](http://www.espressolite.com/) or [Lameboy](https://www.tindie.com/products/davedarko/lameboy-esp8266-handheld/?pt=ac_prod_search).
 
