@@ -15,21 +15,22 @@ Minimal Requirements
 
 Usage
 -----
-Include this as early as possible in your sketch:
+Put this as early as possible in your sketch:
 
     #include "ESP8266SDUpdater.h"
+    SDUpdater sdUpdater;
 
 Use this from anywhere in your code to trigger the update:
 
     if(digitalRead(BUTTON_A_PIN) == 0) {
       Serial.println("Will Load menu binary");
-      updateFromSD(); // defaults to "MENU.BIN"
+      sdUpdater.updateFromSD(); // defaults to "MENU.BIN"
       ESP.restart();
     }
 
 Also works with filenames:
 
-    updateFromSD("/BATMAN.BIN");
+    sdUpdater.updateFromSD("/BATMAN.BIN");
     ESP.restart(); // don't forget to restart!
 
 The [OLEDiFOO example](https://github.com/tobozo/ESP8266SDUpdater/tree/master/examples/OLEDiFOO) should have its binary renamed to MENU.BIN and copied onto the SD Card.
