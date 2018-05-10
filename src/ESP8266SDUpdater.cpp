@@ -31,7 +31,7 @@
 
 #include "ESP8266SDUpdater.h"
 
-void SDUpdater::performUpdate(Stream &updateSource, size_t updateSize, String fileName) {
+bool SDUpdater::performUpdate(Stream &updateSource, size_t updateSize, String fileName) {
   if (Update.begin(updateSize)) {      
     size_t written = Update.writeStream(updateSource);
     if (written == updateSize) {
@@ -43,6 +43,7 @@ void SDUpdater::performUpdate(Stream &updateSource, size_t updateSize, String fi
       Serial.println("FOTA done!");
       if (Update.isFinished()) {
         Serial.println("Update successfully completed. Rebooting.");
+        return true;
       } else {
         Serial.println("Update not finished? Something went wrong!");
       }
@@ -52,20 +53,23 @@ void SDUpdater::performUpdate(Stream &updateSource, size_t updateSize, String fi
   } else {
     Serial.println("Not enough space to begin FOTA");
   }
+  return false;
 }
 
 
-void SDUpdater::updateFromSD(String fileName) {
+bool SDUpdater::updateFromSD(String fileName) {
   File root = SD.open("/");
   File updateBin = SD.open(fileName);
   size_t updateSize = updateBin.size();
+  bool ret = false;
   if (updateSize > 0) {
     Serial.println("Try to start update");
-    performUpdate(updateBin, updateSize, fileName);
+    ret = performUpdate(updateBin, updateSize, fileName);
   } else {
-     Serial.println("Error, file is empty");
+    Serial.println("Error, file is empty, did you SD.begin()?");
   }
   updateBin.close();
+  return ret;
 }
 
 

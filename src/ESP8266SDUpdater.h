@@ -75,10 +75,10 @@ static String MENU_BIN = "/MENU.BIN";
 class SDUpdater {
   public: 
     void run();
-    void updateFromSD(String fileName = MENU_BIN );
+    bool updateFromSD(String fileName = MENU_BIN );
 
   private:
-    void performUpdate(Stream &updateSource, size_t updateSize, String fileName);
+    bool performUpdate(Stream &updateSource, size_t updateSize, String fileName);
 };
 
 #endif 
