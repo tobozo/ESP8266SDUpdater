@@ -61,6 +61,7 @@
 
 SSD1306Wire display = SSD1306Wire(0x3c, SDA, SCL); // for 0.96" OLED
 File root;
+SDUpdater sdUpdater;
 
 /* filenames cache structure */
 struct FileInfo {
@@ -191,7 +192,7 @@ void loop() {
     Serial.print("Will load ");
     Serial.println(fileInfo[virtualPos].fileName);
     delay(1000);
-    updateFromSD(fileInfo[virtualPos].fileName);
+    sdUpdater.updateFromSD(fileInfo[virtualPos].fileName);
     ESP.restart();
   }
 }

@@ -33,15 +33,16 @@
  * This code is used by the menu but must also be included in
  * any app that will be compiled and copied the sd card.
  * 
+ * Just add this in as early as possible in your sketch:
  * 
- *  Just add this in your sketch:
- * 
- *  #include "ESP8266SDUpdater.h"
+ *   #include "ESP8266SDUpdater.h"
+ *   SDUpdater sdUpdater;
  *  
+ * Insert this in your setup:
  * 
  *   if(digitalRead(BUTTON_A_PIN) == 0) {
  *     Serial.println("Will Load menu binary");
- *     updateFromSD();
+ *     sdUpdater.run(); // expecting a "MENU.BIN" file on the SD card
  *     ESP.restart();
  *   }
  * 
@@ -50,6 +51,15 @@
  * to run normally except at boot if the Button A is 
  * pressed, it will load the MENU_BIN from the sd card
  * 
+ * Arbitrary apps can be loaded as follows:
+ * 
+ *   sdUpdater.updateFromSD("MY_APP.BIN");
+ * 
+ * Note: It is assumed the SD Card is using the default pins for CS, 
+ * MISO, MOSI and CLK. Only the CS pin can be changed using:
+ * 
+ *   #define SD_CS [pin-number]
+ * 
  */
 
 #include <SPI.h>
@@ -57,73 +67,18 @@
 //     https://github.com/esp8266/Arduino/search?utf8=%E2%9C%93&q=FS_NO_GLOBALS
 // If you also get namespace conflicts you may need to patch you app too:
 //     https://github.com/esp8266/Arduino/issues/2281#issuecomment-258706478
-#define FS_NO_GLOBALS
-#include <SD.h>
+#define FS_NO_GLOBALS // avoid namespace conflicts between SPIFFS and SD
+#include <SD.h> // downgrade to version 1.1.1 of the SD.h library if necessary
 
-String MENU_BIN = "/MENU.BIN";
+static String MENU_BIN = "/MENU.BIN";
 
-void displayUpdateUI(String label) {
-  /*
-  display.setBrightness(100);
-  display.fillScreen(BLACK);
-  display.setCursor(10, 10);
-  display.setTextColor(WHITE);
-  display.setTextSize(2);
-  display.printf(label.c_str());
-  display.drawRect(16, 20, 100, 24, WHITE);
-  */
-}
+class SDUpdater {
+  public: 
+    void run();
+    void updateFromSD(String fileName = MENU_BIN );
 
+  private:
+    void performUpdate(Stream &updateSource, size_t updateSize, String fileName);
+};
 
-void ESP8266SDMenuProgress(int state, int size) {
-  int percent = (state*100) / size;
-  Serial.printf("percent = %d\n", percent);
-  if (percent > 0) {
-    //display.drawRect(16, 20, percent, 24, BLACK);
-  }
-}
-
-// perform the actual update from a given stream
-void performUpdate(Stream &updateSource, size_t updateSize, String fileName) {
-   displayUpdateUI("LOADING " + fileName);
-   //Update.onProgress(ESP8266SDMenuProgress);
-   if (Update.begin(updateSize)) {      
-      size_t written = Update.writeStream(updateSource);
-      if (written == updateSize) {
-         Serial.println("Written : " + String(written) + " successfully");
-      } else {
-         Serial.println("Written only : " + String(written) + "/" + String(updateSize) + ". Retry?");
-      }
-      if (Update.end()) {
-         Serial.println("FOTA done!");
-         if (Update.isFinished()) {
-            Serial.println("Update successfully completed. Rebooting.");
-         } else {
-            Serial.println("Update not finished? Something went wrong!");
-         }
-      } else {
-         Serial.println("Error Occurred. Error #: " + String(Update.getError()));
-      }
-   } else {
-      Serial.println("Not enough space to begin FOTA");
-   }
-}
-
-// check given FS for valid MENU_BIN and perform update if available
-void updateFromSD(String fileName = MENU_BIN ) {
-  SD.begin();
-  File root = SD.open("/");
-
-  File updateBin = SD.open(fileName);
-
-  size_t updateSize = updateBin.size();
-  if (updateSize > 0) {
-    Serial.println("Try to start update");
-    performUpdate(updateBin, updateSize, fileName);
-  } else {
-     Serial.println("Error, file is empty");
-  }
-  updateBin.close();
-
-}
 #endif 

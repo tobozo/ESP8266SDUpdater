@@ -1,6 +1,6 @@
 
 #include <ESP8266SDUpdater.h>
-
+SDUpdater sdUpdater;
 
 void setup() {
   // put your setup code here, to run once:
@@ -11,6 +11,6 @@ void setup() {
 
 void loop() {
   Serial.println("Will reload the menu");
-  updateFromSD();
+  sdUpdater.updateFromSD();
   ESP.restart();
 }
