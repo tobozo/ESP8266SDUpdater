@@ -81,4 +81,10 @@ class SDUpdater {
     bool performUpdate(Stream &updateSource, size_t updateSize, String fileName);
 };
 
+/* don't break older versions of the SD Updater */
+static void updateFromSD(String fileName = MENU_BIN ) {
+  SDUpdater sdUpdater;
+  sdUpdater.updateFromSD(fileName);
+}
+
 #endif 
